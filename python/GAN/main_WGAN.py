@@ -17,7 +17,9 @@ import matplotlib.pyplot as plt
 
 import math
 
-from models.conditional_stylegan import ConditionalGenerator, ConditionalDiscriminator
+import models.dcgan as dcgan
+import models.cdcgan as cdcgan
+import models.mlp as mlp
 import json
 
 #Run with "python main.py"
@@ -146,14 +148,20 @@ def weights_init(m):
         m.weight.data.normal_(1.0, 0.02)
         m.bias.data.fill_(0)
 
-netG = ConditionalGenerator(map_size, nz, z_dims, ngf, ngpu, opt.num_classes, n_extra_layers)
+if opt.num_classes > 0:
+    netG = cdcgan.CDCGAN_G(map_size, nz, z_dims, ngf, ngpu, opt.num_classes, n_extra_layers)
+else:
+    netG = dcgan.DCGAN_G(map_size, nz, z_dims, ngf, ngpu, n_extra_layers)
 
 netG.apply(weights_init)
 if opt.netG != '': # load checkpoint if needed
     netG.load_state_dict(torch.load(opt.netG))
 print(netG)
 
-netD = ConditionalDiscriminator(map_size, nz, z_dims, ndf, ngpu, opt.num_classes, n_extra_layers)
+if opt.num_classes > 0:
+    netD = cdcgan.CDCGAN_D(map_size, nz, z_dims, ndf, ngpu, opt.num_classes, n_extra_layers)
+else:
+    netD = dcgan.DCGAN_D(map_size, nz, z_dims, ndf, ngpu, n_extra_layers)
 
 netD.apply(weights_init)
 

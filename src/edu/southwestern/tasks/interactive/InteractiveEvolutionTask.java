@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -73,9 +74,10 @@ import edu.southwestern.util.random.RandomNumbers;
  */
 public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTask<T>, ActionListener, ChangeListener, NetworkTask {
 
+	public static final int DEFAULT_BUTTON_FONT_SIZE = 16;
 	public static final int BIG_BUTTON_FONT_SIZE = 30;
 	//Global static final variables
-	public static final int NUM_COLUMNS	= 5;
+	public static final int NUM_COLUMNS	= 1;
 	public static final int MPG_DEFAULT = 2;// Starting number of mutations per generation (on slider)	
 	// Offset for checkbox id numbers assigned to activation function checkboxes
 	public static final int ACTIVATION_CHECKBOX_OFFSET = 100;
@@ -172,6 +174,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 		}
 
 		//Global variable instantiations
+		Parameters.parameters.setInteger("mu", 5);  // 強制設定 "mu" 為 5
 		numButtonOptions	= Parameters.parameters.integerParameter("mu");
 		numRows = numButtonOptions / NUM_COLUMNS;
 		buttonHeight = Parameters.parameters.integerParameter("imageSize");
@@ -198,7 +201,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 
 		//frame.setSize(PIC_SIZE * NUM_COLUMNS + 200, PIC_SIZE * NUM_ROWS + 700);
 		frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
-		buttonHeight = Math.min(buttonHeight, frame.getWidth() / NUM_COLUMNS);
+		buttonHeight = Math.min(buttonHeight, frame.getWidth() / NUM_COLUMNS)-50;
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new GridLayout(numRows + 1, 0));// the + 1 includes room for the title panel
@@ -261,13 +264,14 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 						
 			resetButton.setText("Reset");
 			saveButton.setText("Save");
+			saveButton.setFont(new Font("Arial", Font.PLAIN, DEFAULT_BUTTON_FONT_SIZE));
 			evolveButton.setText("Evolve");
 			//lineageButton.setText("Lineage");
 			if(evolveCPPNs) networkButton.setText("Network");
 			undoButton.setText("Undo");
 			
 			//adds slider for mutation rate change
-			JSlider mutationsPerGeneration = new JSlider(JSlider.HORIZONTAL, MPG_MIN, MPG_MAX, MPG_DEFAULT);
+			JSlider mutationsPerGeneration = new JSlider(JSlider.VERTICAL, MPG_MIN, MPG_MAX, MPG_DEFAULT);
 
 			Hashtable<Integer,JLabel> labels = new Hashtable<>();
 			//set graphic names and toolTip titles
@@ -301,7 +305,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 			mutationsPerGeneration.setLabelTable(labels);
 			mutationsPerGeneration.setPaintLabels(true);
 			mutationsPerGeneration.setToolTipText("The number of mutation chances per offspring when clicking Evolve. A higher value will result in larger differences between parents and offspring.");
-			mutationsPerGeneration.setPreferredSize(new Dimension((int)(200 * (Parameters.parameters.booleanParameter("bigInteractiveButtons") ? 1.7 : 1)), 40 * (Parameters.parameters.booleanParameter("bigInteractiveButtons") ? 2 : 1)));
+			mutationsPerGeneration.setPreferredSize(new Dimension((int)(100 * (Parameters.parameters.booleanParameter("bigInteractiveButtons") ? 1.7 : 1)), 100 * (Parameters.parameters.booleanParameter("bigInteractiveButtons") ? 2 : 1)));
 
 			//add action listeners to buttons
 			resetButton.addActionListener(this);
@@ -313,6 +317,13 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 			undoButton.addActionListener(this);
 
 			mutationsPerGeneration.addChangeListener(this);
+			
+			// add generation count
+//			@SuppressWarnings("unchecked")
+//			JLabel generationCount = new JLabel("Generation: " + ((SinglePopulationGenerationalEA<T>) MMNEAT.ea).currentGeneration());
+			JLabel generationCount = new JLabel("Generation: 0");
+			generationCount.setFont(new Font("Arial", Font.PLAIN, 23));
+			top.add(generationCount);
 
 			if(!Parameters.parameters.booleanParameter("simplifiedInteractiveInterface")) {
 				//add additional action buttons
@@ -322,11 +333,14 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 
 			//add graphics to title panel
 			top.add(evolveButton);
+			
+			top.add(undoButton);
+			top.add(saveButton);
 
 			if(!Parameters.parameters.booleanParameter("simplifiedInteractiveInterface")) {
-				if(Parameters.parameters.booleanParameter("allowInteractiveSave")) top.add(saveButton);
+//				if(Parameters.parameters.booleanParameter("allowInteractiveSave")) top.add(saveButton);
 				if(evolveCPPNs) top.add(networkButton);
-				if(Parameters.parameters.booleanParameter("allowInteractiveUndo")) top.add(undoButton);
+//				if(Parameters.parameters.booleanParameter("allowInteractiveUndo")) top.add(undoButton);
 			}
 
 			//top.add(closeButton);
@@ -347,7 +361,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 					functionCheckbox.setForeground(CombinatoricUtilities.colorFromInt(ftype));
 					if(!Parameters.parameters.booleanParameter("simplifiedInteractiveInterface")) {
 						//add activation function checkboxes to interface
-						bottom.add(functionCheckbox);
+// 						bottom.add(functionCheckbox);
 					}
 				}		
 			}
@@ -359,7 +373,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 		panels.add(topper);
 		
 		// Allows for better display ratio on buttons
-		buttonWidth = (frame.getHeight() - topper.getHeight())/numRows;
+		buttonWidth = (frame.getHeight() - topper.getHeight())/numRows+1000;
 
 		//adds button panels
 		addButtonPanels();	
@@ -398,7 +412,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 //		puzzleDoor.setName("Allow Puzzle Doors?");
 //		puzzleDoor.setForeground(new Color(0,0,0));
 //		effectsCheckboxes.add(puzzleDoor);
-		top.add(effectsCheckboxes);
+//		top.add(effectsCheckboxes);
 	}
 
 	/**
@@ -457,6 +471,9 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 	 */
 	protected JButton getImageButton(BufferedImage image, String s) {
 		JButton button = new JButton(new ImageIcon(image));
+		button.setBackground(new Color(184,200,248));
+		button.setOpaque(true);
+//		button.setBorderPainted(false);
 		button.setName(s);
 		return button;
 	}
@@ -579,7 +596,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 		if(!selected) scores.add(new Score<T>(individual, new double[]{0}, null));
 		setButtonImage(showNetwork ? getNetwork(individual) : getButtonImage(true, individual.getPhenotype(), buttonWidth, buttonHeight, inputMultipliers), x);
 		if(!selected) chosen[x] = false;
-		buttons.get(x).setBorder(BorderFactory.createLineBorder(selected ? Color.BLUE : Color.lightGray, BORDER_THICKNESS));
+		buttons.get(x).setBorder(BorderFactory.createLineBorder(selected ? Color.BLUE : Color.GRAY, BORDER_THICKNESS));
 	}
 
 	/**
@@ -689,14 +706,14 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 			System.out.println("Deselect "+scoreIndex);
 			selectedItems.remove(new Integer(scoreIndex)); //remove CPPN from list of currently selected CPPNs
 			chosen[scoreIndex] = false;
-			buttons.get(scoreIndex).setBorder(BorderFactory.createLineBorder(Color.lightGray, BORDER_THICKNESS));
+			buttons.get(scoreIndex).setBorder(BorderFactory.createLineBorder(Color.GRAY, BORDER_THICKNESS));
 			scores.get(scoreIndex).replaceScores(new double[]{0});
 		} else {//if image has not been clicked, set it
 			System.out.println("Select "+scoreIndex);
 			if(!selectedItems.contains(scoreIndex)) // Do not add duplicates 
 				selectedItems.add(scoreIndex); //add CPPN to list of currently selected CPPNs
 			chosen[scoreIndex] = true;
-			buttons.get(scoreIndex).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_THICKNESS));
+			buttons.get(scoreIndex).setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_THICKNESS));
 			scores.get(scoreIndex).replaceScores(new double[]{1.0});
 		}
 		additionalButtonClickAction(scoreIndex,scores.get(scoreIndex).individual);

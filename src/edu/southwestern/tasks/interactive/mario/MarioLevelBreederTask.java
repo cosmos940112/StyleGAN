@@ -1,6 +1,8 @@
 package edu.southwestern.tasks.interactive.mario;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -88,6 +90,11 @@ public class MarioLevelBreederTask<T extends Network> extends InteractiveEvoluti
 		//Construction of button that lets user plays the level
 		JButton play = new JButton("Play");
 		// Name is first available numeric label after the input disablers
+		play.setPreferredSize(new Dimension(100, 80));
+		play.setFont(new Font("Arial", Font.PLAIN, DEFAULT_BUTTON_FONT_SIZE));
+//		play.setBackground(new Color(255, 100, 100));
+//		play.setOpaque(true);
+//		play.setBorderPainted(false);
 		play.setName("" + PLAY_BUTTON_INDEX);
 		play.addActionListener(this);
 		top.add(play);
