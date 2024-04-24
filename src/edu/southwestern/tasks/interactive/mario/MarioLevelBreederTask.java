@@ -1,6 +1,5 @@
 package edu.southwestern.tasks.interactive.mario;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.image.BufferedImage;
@@ -57,8 +56,8 @@ public class MarioLevelBreederTask<T extends Network> extends InteractiveEvoluti
 		levelWidthSlider.setMinorTickSpacing(10000);
 		levelWidthSlider.setPaintTicks(true);
 		Hashtable<Integer,JLabel> labels = new Hashtable<>();
-		labels.put(shortestLevelLength(), new JLabel("Shorter Level"));
-		labels.put(longestLevelLength(), new JLabel("Longer Level"));
+		labels.put(shortestLevelLength(), new JLabel(""));
+		labels.put(longestLevelLength(), new JLabel(""));
 		levelWidthSlider.setLabelTable(labels);
 		levelWidthSlider.setPaintLabels(true);
 		levelWidthSlider.setPreferredSize(new Dimension(200, 40));
@@ -90,7 +89,7 @@ public class MarioLevelBreederTask<T extends Network> extends InteractiveEvoluti
 		//Construction of button that lets user plays the level
 		JButton play = new JButton("Play");
 		// Name is first available numeric label after the input disablers
-		play.setPreferredSize(new Dimension(100, 80));
+		play.setPreferredSize(new Dimension(100, 60));
 		play.setFont(new Font("Arial", Font.PLAIN, DEFAULT_BUTTON_FONT_SIZE));
 //		play.setBackground(new Color(255, 100, 100));
 //		play.setOpaque(true);
@@ -114,7 +113,7 @@ public class MarioLevelBreederTask<T extends Network> extends InteractiveEvoluti
 
 	@Override
 	protected String getWindowTitle() {
-		return "Mario Level Breeder";
+		return "Interactive Game Console";
 	}
 
 	protected String[] generateLevelLayoutFromCPPN(Network cppn, double[] inputMultipliers, int marioLevelLength) {

@@ -101,11 +101,11 @@ public class ToolsConfigurator extends JFrame
         if (marioComponentFrame == null)
         {
             marioComponentFrame = new JFrame(/*evaluationOptions.getAgentName() +*/ "Mario Intelligent 2.0");
-            marioComponent = new MarioComponent(320, 240);
+            marioComponent = new MarioComponent(1320, 240);
             marioComponentFrame.setContentPane(marioComponent);
             marioComponent.init();
             marioComponentFrame.pack();
-            marioComponentFrame.setResizable(false);
+//            marioComponentFrame.setResizable(false);
             marioComponentFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
 //        marioComponentFrame.setTitle(evaluationOptions.getAgent().getName() + " - Mario Intelligent 2.0");

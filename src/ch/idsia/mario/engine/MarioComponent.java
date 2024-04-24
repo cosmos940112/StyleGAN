@@ -129,7 +129,7 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
 		Graphics g = null;
 		Graphics og = null;
 
-		image = createVolatileImage(320, 240);
+		image = createVolatileImage(width, height);
 		g = getGraphics();
 		og = image.getGraphics();
 
@@ -171,7 +171,7 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
 
 			//            og.setColor(Color.RED);
 			if (GlobalOptions.VisualizationOn) {
-				og.fillRect(0, 0, 320, 240);
+				og.fillRect(0, 0, width, height);
 				scene.render(og, alpha);
 			}
 
@@ -224,21 +224,21 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
 
 			if (GlobalOptions.VisualizationOn) {
 
-				String msg = "Agent: " + agent.getName();
-				LevelScene.drawStringDropShadow(og, msg, 0, 7, 5);
-
-				msg = "Selected Actions: ";
-				LevelScene.drawStringDropShadow(og, msg, 0, 8, 6);
-
-				msg = "";
-				if (action != null)
-				{
-					for (int i = 0; i < Environment.numberOfButtons; ++i)
-						msg += (action[i]) ? Scene.keysStr[i] : "      ";
-				}
-				else
-					msg = "NULL";                    
-				drawString(og, msg, 6, 78, 1);
+//				String msg = "Agent: " + agent.getName();
+//				LevelScene.drawStringDropShadow(og, msg, 0, 7, 5);
+//
+//				msg = "Selected Actions: ";
+//				LevelScene.drawStringDropShadow(og, msg, 0, 8, 6);
+//
+//				msg = "";
+//				if (action != null)
+//				{
+//					for (int i = 0; i < Environment.numberOfButtons; ++i)
+//						msg += (action[i]) ? Scene.keysStr[i] : "      ";
+//				}
+//				else
+//					msg = "NULL";                    
+//				drawString(og, msg, 6, 78, 1);
 
 				if (!this.hasFocus() && tick / 4 % 2 == 0) {
 					String msgClick = "CLICK TO PLAY";
@@ -248,17 +248,17 @@ public class MarioComponent extends JComponent implements Runnable, /*KeyListene
 					drawString(og, msgClick, 160 - msgClick.length() * 4, 110, 7);
 				}
 				og.setColor(Color.DARK_GRAY);
-				LevelScene.drawStringDropShadow(og, "FPS: ", 33, 2, 7);
-				LevelScene.drawStringDropShadow(og, ((GlobalOptions.FPS > 99) ? "\\infty" : GlobalOptions.FPS.toString()), 33, 3, 7);
+//				LevelScene.drawStringDropShadow(og, "FPS: ", 33, 2, 7);
+//				LevelScene.drawStringDropShadow(og, ((GlobalOptions.FPS > 99) ? "\\infty" : GlobalOptions.FPS.toString()), 33, 3, 7);
+//
+//				msg = totalNumberOfTrials == -2 ? "" : currentTrial + "(" + ((totalNumberOfTrials == -1) ? "\\infty" : totalNumberOfTrials) + ")";
+//
+//				LevelScene.drawStringDropShadow(og, "Trial:", 33, 4, 7);
+//				LevelScene.drawStringDropShadow(og, msg, 33, 5, 7);
 
-				msg = totalNumberOfTrials == -2 ? "" : currentTrial + "(" + ((totalNumberOfTrials == -1) ? "\\infty" : totalNumberOfTrials) + ")";
 
-				LevelScene.drawStringDropShadow(og, "Trial:", 33, 4, 7);
-				LevelScene.drawStringDropShadow(og, msg, 33, 5, 7);
-
-
-				if (width != 320 || height != 240) {
-					g.drawImage(image, 0, 0, 640 * 2, 480 * 2, null);
+				if (width != 1320 || height != 240) {
+					g.drawImage(image, 0, 0, 2640 * 2, 480 * 2, null);
 				} else {
 					g.drawImage(image, 0, 0, null);
 				}

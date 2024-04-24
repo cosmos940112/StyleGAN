@@ -635,7 +635,7 @@ public class LevelScene extends Scene implements SpriteContext
          }
          else
          {*/
-//        level = LevelGenerator.createLevel(320, 15, levelSeed);
+//        level = LevelGenerator.createLevel(1320, 15, levelSeed);
         if(randomLevel) {
         	level = LevelGenerator.createLevel(levelLength, 15, levelSeed, levelDifficulty, levelType);
         } // Otherwise, assume it was already created
@@ -650,14 +650,14 @@ public class LevelScene extends Scene implements SpriteContext
         paused = false;
         Sprite.spriteContext = this;
         sprites.clear();
-        layer = new LevelRenderer(level, graphicsConfiguration, 320, 240);
+        layer = new LevelRenderer(level, graphicsConfiguration, 1320, 240);
         for (int i = 0; i < 2; i++)
         {
             int scrollSpeed = 4 >> i;
-            int w = ((level.width * 16) - 320) / scrollSpeed + 320;
+            int w = ((level.width * 16) - 1320) / scrollSpeed + 1320;
             int h = ((level.height * 16) - 240) / scrollSpeed + 240;
             Level bgLevel = BgLevelGenerator.createLevel(w / 32 + 1, h / 32 + 1, i == 0, levelType);
-            bgLayer[i] = new BgRenderer(bgLevel, graphicsConfiguration, 320, 240, scrollSpeed);
+            bgLayer[i] = new BgRenderer(bgLevel, graphicsConfiguration, 1320, 240, scrollSpeed);
         }
         mario = new Mario(this);
         sprites.add(mario);
@@ -714,7 +714,7 @@ public class LevelScene extends Scene implements SpriteContext
         xCam = targetXCam;
 
         if (xCam < 0) xCam = 0;
-        if (xCam > level.width * 16 - 320) xCam = level.width * 16 - 320;
+        if (xCam > level.width * 16 - 1320) xCam = level.width * 16 - 1320;
 
         /*      if (recorder != null)
          {
@@ -735,7 +735,7 @@ public class LevelScene extends Scene implements SpriteContext
             {
                 float xd = sprite.x - xCam;
                 float yd = sprite.y - yCam;
-                if (xd < -64 || xd > 320 + 64 || yd < -64 || yd > 240 + 64)
+                if (xd < -64 || xd > 1320 + 64 || yd < -64 || yd > 240 + 64)
                 {
                     removeSprite(sprite);
                 }
@@ -882,7 +882,7 @@ public class LevelScene extends Scene implements SpriteContext
 
     public void render(Graphics g, float alpha)
     {
-        int xCam = (int) (mario.xOld + (mario.x - mario.xOld) * alpha) - 160;
+        int xCam = (int) (mario.xOld + (mario.x - mario.xOld) * alpha) - 660;
         int yCam = (int) (mario.yOld + (mario.y - mario.yOld) * alpha) - 120;
 
         if (GlobalOptions.MarioAlwaysInCenter)
@@ -894,7 +894,7 @@ public class LevelScene extends Scene implements SpriteContext
             //        int yCam = (int) (yCamO + (this.yCam - yCamO) * alpha);
             if (xCam < 0) xCam = 0;
             if (yCam < 0) yCam = 0;
-            if (xCam > level.width * 16 - 320) xCam = level.width * 16 - 320;
+            if (xCam > level.width * 16 - 1320) xCam = level.width * 16 - 1320;
             if (yCam > level.height * 16 - 240) yCam = level.height * 16 - 240;
         }
         //      g.drawImage(Art.background, 0, 0, null);
@@ -943,22 +943,22 @@ public class LevelScene extends Scene implements SpriteContext
 //        drawStringDropShadow(g, "#########", 0, 1, 7);
 
 
-        drawStringDropShadow(g, "DIFFICULTY:   " + df.format(this.levelDifficulty), 0, 0, this.levelDifficulty > 6 ? 1 : this.levelDifficulty > 2 ? 4 : 7 ); drawStringDropShadow(g, "CREATURES:" + (mario.world.paused ? "OFF" : "ON"), 19, 0, 7);
-        drawStringDropShadow(g, "SEED:" + this.levelSeed, 0, 1, 7);
-        drawStringDropShadow(g, "TYPE:" + LEVEL_TYPES[this.levelType], 0, 2, 7);                  drawStringDropShadow(g, "ALL KILLS: " + killedCreaturesTotal, 19, 1, 1);
-        drawStringDropShadow(g, "LENGTH:" + (int)mario.x/16 + " of " + this.levelLength, 0, 3, 7); drawStringDropShadow(g, "by Fire  : " + killedCreaturesByFireBall, 19, 2, 1);
-        // Only Mario's stats are tracked here. Track Luigi too?
-        drawStringDropShadow(g, "COINS    : " + df.format(mario.coins), 0, 4, 4);                      drawStringDropShadow(g, "by Shell : " + killedCreaturesByShell, 19, 3, 1);
-        drawStringDropShadow(g, "MUSHROOMS: " + df.format(mario.gainedMushrooms), 0, 5, 4);                  drawStringDropShadow(g, "by Stomp : " + killedCreaturesByStomp, 19, 4, 1);
-        drawStringDropShadow(g, "FLOWERS  : " + df.format(mario.gainedFlowers), 0, 6, 4);
-
-
-        drawStringDropShadow(g, "TIME", 33, 0, 7);
-        int time = (timeLeft+15-1)/15;
-        if (time<0) time = 0;
-        drawStringDropShadow(g, " "+df2.format(time), 33, 1, 7);
-
-        drawProgress(g);
+//        drawStringDropShadow(g, "DIFFICULTY:   " + df.format(this.levelDifficulty), 0, 0, this.levelDifficulty > 6 ? 1 : this.levelDifficulty > 2 ? 4 : 7 ); drawStringDropShadow(g, "CREATURES:" + (mario.world.paused ? "OFF" : "ON"), 19, 0, 7);
+//        drawStringDropShadow(g, "SEED:" + this.levelSeed, 0, 1, 7);
+//        drawStringDropShadow(g, "TYPE:" + LEVEL_TYPES[this.levelType], 0, 2, 7);                  drawStringDropShadow(g, "ALL KILLS: " + killedCreaturesTotal, 19, 1, 1);
+//        drawStringDropShadow(g, "LENGTH:" + (int)mario.x/16 + " of " + this.levelLength, 0, 3, 7); drawStringDropShadow(g, "by Fire  : " + killedCreaturesByFireBall, 19, 2, 1);
+//        // Only Mario's stats are tracked here. Track Luigi too?
+//        drawStringDropShadow(g, "COINS    : " + df.format(mario.coins), 0, 4, 4);                      drawStringDropShadow(g, "by Shell : " + killedCreaturesByShell, 19, 3, 1);
+//        drawStringDropShadow(g, "MUSHROOMS: " + df.format(mario.gainedMushrooms), 0, 5, 4);                  drawStringDropShadow(g, "by Stomp : " + killedCreaturesByStomp, 19, 4, 1);
+//        drawStringDropShadow(g, "FLOWERS  : " + df.format(mario.gainedFlowers), 0, 6, 4);
+//
+//
+//        drawStringDropShadow(g, "TIME", 33, 0, 7);
+//        int time = (timeLeft+15-1)/15;
+//        if (time<0) time = 0;
+//        drawStringDropShadow(g, " "+df2.format(time), 33, 1, 7);
+//
+//        drawProgress(g);
 
         if (GlobalOptions.Labels)
         {
@@ -986,7 +986,7 @@ public class LevelScene extends Scene implements SpriteContext
 //                init();
             }
 
-            renderBlackout(g, mario.xDeathPos - xCam, mario.yDeathPos - yCam, (int) (320 - t));
+            renderBlackout(g, mario.xDeathPos - xCam, mario.yDeathPos - yCam, (int) (1320 - t));
         }
 
         if (mario.deathTime > 0)
@@ -1001,7 +1001,7 @@ public class LevelScene extends Scene implements SpriteContext
 //                init();
 //            }
 
-//            renderBlackout(g, (int) (mario.xDeathPos - xCam), (int) (mario.yDeathPos - yCam), (int) (320 - t));
+//            renderBlackout(g, (int) (mario.xDeathPos - xCam), (int) (mario.yDeathPos - yCam), (int) (1320 - t));
         }
     }
 
@@ -1039,7 +1039,7 @@ public class LevelScene extends Scene implements SpriteContext
 
     private void renderBlackout(Graphics g, int x, int y, int radius)
     {
-        if (radius > 320) return;
+        if (radius > 1320) return;
 
         int[] xp = new int[20];
         int[] yp = new int[20];
@@ -1048,9 +1048,9 @@ public class LevelScene extends Scene implements SpriteContext
             xp[i] = x + (int) (Math.cos(i * Math.PI / 15) * radius);
             yp[i] = y + (int) (Math.sin(i * Math.PI / 15) * radius);
         }
-        xp[16] = 320;
+        xp[16] = 1320;
         yp[16] = y;
-        xp[17] = 320;
+        xp[17] = 1320;
         yp[17] = 240;
         xp[18] = 0;
         yp[18] = 240;
@@ -1063,9 +1063,9 @@ public class LevelScene extends Scene implements SpriteContext
             xp[i] = x - (int) (Math.cos(i * Math.PI / 15) * radius);
             yp[i] = y - (int) (Math.sin(i * Math.PI / 15) * radius);
         }
-        xp[16] = 320;
+        xp[16] = 1320;
         yp[16] = y;
-        xp[17] = 320;
+        xp[17] = 1320;
         yp[17] = 0;
         xp[18] = 0;
         yp[18] = 0;

@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Image;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +21,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.Scanner;
 
+import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -34,7 +34,6 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import edu.southwestern.MMNEAT.MMNEAT;
 import edu.southwestern.evolution.GenerationalEA;
@@ -201,7 +200,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 
 		//frame.setSize(PIC_SIZE * NUM_COLUMNS + 200, PIC_SIZE * NUM_ROWS + 700);
 		frame.setSize(Toolkit.getDefaultToolkit().getScreenSize());
-		buttonHeight = Math.min(buttonHeight, frame.getWidth() / NUM_COLUMNS)-50;
+		buttonHeight = Math.min(buttonHeight, frame.getWidth() / NUM_COLUMNS);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(new GridLayout(numRows + 1, 0));// the + 1 includes room for the title panel
@@ -264,7 +263,6 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 						
 			resetButton.setText("Reset");
 			saveButton.setText("Save");
-			saveButton.setFont(new Font("Arial", Font.PLAIN, DEFAULT_BUTTON_FONT_SIZE));
 			evolveButton.setText("Evolve");
 			//lineageButton.setText("Lineage");
 			if(evolveCPPNs) networkButton.setText("Network");
@@ -277,10 +275,16 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 			//set graphic names and toolTip titles
 			evolveButton.setName("" + EVOLVE_BUTTON_INDEX);
 			evolveButton.setToolTipText("Select some members of the population and then click this to create several offspring from those parents. Your selected parents will also be present in the next generation.");
+			evolveButton.setPreferredSize(new Dimension(100, 60));
+			evolveButton.setFont(new Font("Arial", Font.PLAIN, DEFAULT_BUTTON_FONT_SIZE));
 			saveButton.setName("" + SAVE_BUTTON_INDEX);
 			saveButton.setToolTipText("Save button");
+			saveButton.setPreferredSize(new Dimension(100, 60));
+			saveButton.setFont(new Font("Arial", Font.PLAIN, DEFAULT_BUTTON_FONT_SIZE));
 			resetButton.setName("" + RESET_BUTTON_INDEX);
 			resetButton.setToolTipText("Completely resets the whole population with a new random population.");
+			resetButton.setPreferredSize(new Dimension(100, 60));
+			resetButton.setFont(new Font("Arial", Font.PLAIN, DEFAULT_BUTTON_FONT_SIZE));
 			//closeButton.setName("" + CLOSE_BUTTON_INDEX);
 			//closeButton.setToolTipText("Close button");
 			//lineageButton.setName("" + LINEAGE_BUTTON_INDEX);
@@ -291,6 +295,8 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 			}
 			undoButton.setName("" + UNDO_BUTTON_INDEX);
 			undoButton.setToolTipText("Undo button");
+			undoButton.setPreferredSize(new Dimension(100, 60));
+			undoButton.setFont(new Font("Arial", Font.PLAIN, DEFAULT_BUTTON_FONT_SIZE));
 
 			mutationsPerGeneration.setMinorTickSpacing(1);
 			mutationsPerGeneration.setPaintTicks(true);
@@ -305,7 +311,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 			mutationsPerGeneration.setLabelTable(labels);
 			mutationsPerGeneration.setPaintLabels(true);
 			mutationsPerGeneration.setToolTipText("The number of mutation chances per offspring when clicking Evolve. A higher value will result in larger differences between parents and offspring.");
-			mutationsPerGeneration.setPreferredSize(new Dimension((int)(100 * (Parameters.parameters.booleanParameter("bigInteractiveButtons") ? 1.7 : 1)), 100 * (Parameters.parameters.booleanParameter("bigInteractiveButtons") ? 2 : 1)));
+			mutationsPerGeneration.setPreferredSize(new Dimension((int)(100 * (Parameters.parameters.booleanParameter("bigInteractiveButtons") ? 1.7 : 1)), 40 * (Parameters.parameters.booleanParameter("bigInteractiveButtons") ? 2 : 1)));
 
 			//add action listeners to buttons
 			resetButton.addActionListener(this);
@@ -321,9 +327,9 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 			// add generation count
 //			@SuppressWarnings("unchecked")
 //			JLabel generationCount = new JLabel("Generation: " + ((SinglePopulationGenerationalEA<T>) MMNEAT.ea).currentGeneration());
-			JLabel generationCount = new JLabel("Generation: 0");
+			JLabel generationCount = new JLabel("Generation: 0          ");
 			generationCount.setFont(new Font("Arial", Font.PLAIN, 23));
-			top.add(generationCount);
+            topper.add(generationCount);
 
 			if(!Parameters.parameters.booleanParameter("simplifiedInteractiveInterface")) {
 				//add additional action buttons
@@ -339,12 +345,14 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 
 			if(!Parameters.parameters.booleanParameter("simplifiedInteractiveInterface")) {
 //				if(Parameters.parameters.booleanParameter("allowInteractiveSave")) top.add(saveButton);
-				if(evolveCPPNs) top.add(networkButton);
+//				if(evolveCPPNs) top.add(networkButton);
 //				if(Parameters.parameters.booleanParameter("allowInteractiveUndo")) top.add(undoButton);
 			}
 
 			//top.add(closeButton);
-			top.add(mutationsPerGeneration);	
+//			top.add(mutationsPerGeneration);
+			JLabel mutations = new JLabel("           Mutations: 0.2");
+			top.add(mutations);
 
 			if(evolveCPPNs) {
 				//instantiates activation function checkboxes
@@ -368,12 +376,13 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 
 		}
 
+//		top.setLayout(new GridLayout());
 		topper.add(top);
-		topper.add(bottom);
+//		topper.add(bottom);
 		panels.add(topper);
 		
 		// Allows for better display ratio on buttons
-		buttonWidth = (frame.getHeight() - topper.getHeight())/numRows+1000;
+		buttonWidth = (frame.getHeight() - topper.getHeight())/numRows;
 
 		//adds button panels
 		addButtonPanels();	
@@ -384,7 +393,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 		//adds buttons to button panels
 		addButtonsToPanel(0);
 		//add input checkboxes
-		if(evolveCPPNs) inputCheckBoxes();
+//		if(evolveCPPNs) inputCheckBoxes();
 	}
 
 	/**
@@ -532,9 +541,15 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 		if(stretchToFitButtons) {
 			width = frame.getWidth() / NUM_COLUMNS;
 		}
-		ImageIcon img = new ImageIcon(gmi.getScaledInstance(width,height,Image.SCALE_DEFAULT));
+		ImageIcon img = new ImageIcon(gmi.getScaledInstance(width+1000,height,Image.SCALE_DEFAULT));
+        ImageIcon icon = new ImageIcon("/Users/cosmos/git/GameGAN/data/mario/sample/"+buttonIndex+".png");
+        Image image = icon.getImage() ;  
+        Image newimg = image.getScaledInstance( 1320, 145,  java.awt.Image.SCALE_SMOOTH ) ;  
+        icon = new ImageIcon( newimg );
+
 		buttons.get(buttonIndex).setName("" + buttonIndex);
 		buttons.get(buttonIndex).setIcon(img);
+		buttons.get(buttonIndex).setIcon(icon);
 
 	}
 
@@ -547,21 +562,22 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 	 * @param extension file extension
 	 * @return
 	 */
-	protected String getDialogFileName(String type, String extension) {
-		JFileChooser chooser = new JFileChooser();//used to get save name 
-		chooser.setCurrentDirectory(new File("."));
-		chooser.setApproveButtonText("Save");
-		FileNameExtensionFilter filter = new FileNameExtensionFilter(type, extension);
-		chooser.setFileFilter(filter);
-		int returnVal = chooser.showOpenDialog(frame);
-		if(returnVal == JFileChooser.APPROVE_OPTION) {//if the user decides to save the file
-			System.out.println("You chose to call the file: " + chooser.getSelectedFile().getName());
-			return chooser.getCurrentDirectory() + File.separator + chooser.getSelectedFile().getName(); 
-		} else { //else image dumped
-			System.out.println("file not saved");
-			return null;
-		}
+	protected String getDialogFileName(String type, String extension, int i) {
+	    JFileChooser chooser = new JFileChooser();
+	    chooser.setCurrentDirectory(new File("."));  // 設置初始目錄為當前目錄
+	    chooser.setDialogTitle("選擇保存位置");       // 設置對話框的標題
+	    chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);  // 只允許選擇目錄
+	    chooser.setAcceptAllFileFilterUsed(false);  // 不使用文件類型過濾器
+
+	    if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {  // 如果用戶確認選擇
+	        File selectedDirectory = chooser.getSelectedFile();  // 獲取選擇的文件夾
+			return new File(selectedDirectory, "save" + i + "." + extension).getAbsolutePath(); // 指定文件名，返回完整路徑
+	    } else {
+	        System.out.println("file not saved");
+	        return null;
+	    }
 	}
+
 
 	/**
 	 * Generalized version of save method that accounts for user pressing 
@@ -571,7 +587,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 	 * @param i index of item being saved
 	 */
 	protected void save(int i) {
-		String file = getDialogFileName(getFileType(), getFileExtension());
+		String file = getDialogFileName(getFileType(), getFileExtension(), i);
 		if(file != null) {
 			save(file, i);
 		} else {
@@ -585,7 +601,22 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 	 * @param file Desired file name
 	 * @param i Index of item being saved
 	 */
-	protected abstract void save(String file, int i);
+	protected void save(String file, int i) {
+	    if (file != null) {
+	        try {
+	            // 假設這裡有一個方法來獲得要保存的 BufferedImage
+	            BufferedImage imageToSave = getButtonImage(scores.get(i).individual.getPhenotype(), buttonWidth, buttonHeight, inputMultipliers);
+	            // 使用 ImageIO 寫入圖像到文件
+	            File outputFile = new File(file);
+	            ImageIO.write(imageToSave, "png", outputFile); // 這裡假設圖像格式為 png
+	            System.out.println("Image saved to " + file);
+	        } catch (IOException e) {
+	            System.out.println("Error saving image: " + e.getMessage());
+	        }
+	    } else {
+	        System.out.println("Saving cancelled");
+	    }
+	}
 
 	/**
 	 * used to reset image on button using given genotype
