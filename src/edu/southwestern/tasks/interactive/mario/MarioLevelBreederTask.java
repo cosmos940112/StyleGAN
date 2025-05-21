@@ -65,22 +65,22 @@ public class MarioLevelBreederTask<T extends Network> extends InteractiveEvoluti
 		/**
 		 * Changed level width picture previews
 		 */
-		levelWidthSlider.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent e) {
-				if(!initializationComplete) return;
-				// get value
-				JSlider source = (JSlider)e.getSource();
-				if(!source.getValueIsAdjusting()) {
-
-					int newLength = (int) source.getValue();
-
-					Parameters.parameters.setInteger("marioLevelLength", newLength);
-					// reset buttons
-					resetButtons(true);
-				}
-			}
-		});
+//		levelWidthSlider.addChangeListener(new ChangeListener() {
+//			@Override
+//			public void stateChanged(ChangeEvent e) {
+//				if(!initializationComplete) return;
+//				// get value
+//				JSlider source = (JSlider)e.getSource();
+//				if(!source.getValueIsAdjusting()) {
+//
+//					int newLength = (int) source.getValue();
+//
+//					Parameters.parameters.setInteger("marioLevelLength", newLength);
+//					// reset buttons
+//					resetButtons(true);
+//				}
+//			}
+//		});
 		
 		if(!Parameters.parameters.booleanParameter("simplifiedInteractiveInterface")) {
 			top.add(levelWidthSlider);	

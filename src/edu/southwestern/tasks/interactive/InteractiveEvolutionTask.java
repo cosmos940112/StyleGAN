@@ -133,6 +133,9 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 
 	public LinkedList<Integer> selectedItems;
 	private boolean stretchToFitButtons;
+	
+	public static JLabel generationCount;
+	public static int Generation = 0;
 
 	/**
 	 * Gets button width, but has alternate setting if large-font buttons are desired.
@@ -327,7 +330,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 			// add generation count
 //			@SuppressWarnings("unchecked")
 //			JLabel generationCount = new JLabel("Generation: " + ((SinglePopulationGenerationalEA<T>) MMNEAT.ea).currentGeneration());
-			JLabel generationCount = new JLabel("Generation: 0          ");
+			generationCount = new JLabel("Generation: "+Generation+"          ");
 			generationCount.setFont(new Font("Arial", Font.PLAIN, 23));
             topper.add(generationCount);
 
@@ -351,7 +354,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 
 			//top.add(closeButton);
 //			top.add(mutationsPerGeneration);
-			JLabel mutations = new JLabel("           Mutations: 0.2");
+			JLabel mutations = new JLabel("           Mutations: ");
 			top.add(mutations);
 
 			if(evolveCPPNs) {
@@ -393,7 +396,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 		//adds buttons to button panels
 		addButtonsToPanel(0);
 		//add input checkboxes
-//		if(evolveCPPNs) inputCheckBoxes();
+		if(evolveCPPNs) inputCheckBoxes();
 	}
 
 	/**
@@ -541,7 +544,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 		if(stretchToFitButtons) {
 			width = frame.getWidth() / NUM_COLUMNS;
 		}
-		ImageIcon img = new ImageIcon(gmi.getScaledInstance(width+1000,height,Image.SCALE_DEFAULT));
+		ImageIcon img = new ImageIcon(gmi.getScaledInstance(width+800,height-50	,Image.SCALE_DEFAULT));
         ImageIcon icon = new ImageIcon("/Users/cosmos/git/GameGAN/data/mario/sample/"+buttonIndex+".png");
         Image image = icon.getImage() ;  
         Image newimg = image.getScaledInstance( 1320, 145,  java.awt.Image.SCALE_SMOOTH ) ;  
@@ -549,7 +552,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 
 		buttons.get(buttonIndex).setName("" + buttonIndex);
 		buttons.get(buttonIndex).setIcon(img);
-		buttons.get(buttonIndex).setIcon(icon);
+//		buttons.get(buttonIndex).setIcon(icon);
 
 	}
 
@@ -744,7 +747,7 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 			if(!selectedItems.contains(scoreIndex)) // Do not add duplicates 
 				selectedItems.add(scoreIndex); //add CPPN to list of currently selected CPPNs
 			chosen[scoreIndex] = true;
-			buttons.get(scoreIndex).setBorder(BorderFactory.createLineBorder(Color.BLACK, BORDER_THICKNESS));
+			buttons.get(scoreIndex).setBorder(BorderFactory.createLineBorder(Color.BLUE, BORDER_THICKNESS));
 			scores.get(scoreIndex).replaceScores(new double[]{1.0});
 		}
 		additionalButtonClickAction(scoreIndex,scores.get(scoreIndex).individual);
@@ -942,6 +945,8 @@ public abstract class InteractiveEvolutionTask<T> implements SinglePopulationTas
 					}
 				}
 			}
+			Generation=((SinglePopulationGenerationalEA<T>) MMNEAT.ea).currentGeneration()+1;
+			generationCount.setText("Generation: " + Generation + "          "); // 更新標籤的文字
 			evolve();
 		} else if(itemID >= IMAGE_BUTTON_INDEX) {//If an image button clicked
 			assert (scores.size() == buttons.size()) : 

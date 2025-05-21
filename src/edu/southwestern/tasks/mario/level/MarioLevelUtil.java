@@ -2,15 +2,19 @@ package edu.southwestern.tasks.mario.level;
 
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -32,6 +36,7 @@ import edu.southwestern.util.stats.StatisticsUtilities;
 
 public class MarioLevelUtil {
 	
+	public static int LEVEL_INDEX = 1;
 	public static final int BLOCK_SIZE = 16;
 	public static final int LEVEL_HEIGHT = 12;
 	public static final double MAX_HEIGHT_INDEX = LEVEL_HEIGHT - 1;
@@ -210,9 +215,46 @@ public class MarioLevelUtil {
 				}
 			}
 		}
-		
+//		level = hardCodeLevel(LEVEL_INDEX++);
 		return level;
 	}
+	
+	public static String[] hardCodeLevel(int index) {
+		List<String> linesArray = new ArrayList<>();
+		String filePath = "/Users/cosmos/Documents/UoA会津大学/Mario_StyleGAN/Test_set/txt_fixed/mario-" + index + ".txt";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+            	linesArray.add(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+		return linesArray.toArray(new String[0]);
+	}
+	
+	public static String[] hardCodeLevel() {
+		String[] linesArray = new String[14];
+		int i = 0;
+		String filePath = "/Users/cosmos/Documents/UoA会津大学/Mario_StyleGAN/Test_set/txt/mario-1-1.txt";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+            	int section_length = line.length()/3;
+            	int section = 3;
+            	linesArray[i] = line.substring(section_length*(section-1), section_length*section)+1;
+            	i++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+		return linesArray;
+	}
+
 
 	/**
 	 * Generates a level assuming all CPPN inputs are turned on.
